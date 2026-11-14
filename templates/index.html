@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>PrivatBank Transfer</title>
+ <style>
+ body { font-family: sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }
+.container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+ h1 { text-align: center; color: #333; margin-bottom: 30px; }
+.form-group { margin-bottom: 15px; }
+ label { display: block; margin-bottom: 5px; color: #555; font-weight: bold; }
+ input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 16px; }
+ button { width: 100%; padding: 14px; background-color: #007BFF; color: white; border: none; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+ button:hover { background-color: #0056b3; }
+.balance-display { margin-top: 30px; padding: 20px; background-color: #e9ecef; border-radius: 8px; }
+.balance-display h3 { margin-top: 0; border-bottom: 2px solid #007BFF; padding-bottom: 10px; }
+.balance-list { list-style: none; padding: 0; }
+.balance-item { background: white; padding: 10px; margin-bottom: 10px; border-radius: 4px; border-left: 4px solid #28a745; display: flex; justify-content: space-between; }
+.amount { font-weight: bold; }
+.alert { padding: 15px; margin-bottom: 20px; border-radius: 6px; font-weight: bold; text-align: center; }
+.success { background-color: #d4edda; color: #155724; }
+.error { background-color: #f8d7da; color: #721c24; }
+ </style>
+</head>
+<body>
+ <div class="container">
+ <h1>PrivatBank</h1>
+ 
+ <form method="POST" action="/send">
+ <div class="form-group">
+ <label>Sender Account Number:</label>
+ <input type="text" id="sender_account" name="sender_account" required placeholder="e.g. 10001">
+ </div>
+ <div class="form-group">
+ <label>Receiver's Account Number:</label>
+ <input type="text" id="receiver_account" name="receiver_account" required placeholder="e.g. 10002">
+ </div>
+ <div class="form-group">
+ <label>Receiver's Bank Name:</label>
+ <input type="text" id="receiver_bank_name" name="receiver_bank_name" required placeholder="e.g. Chase Bank">
+ </div>
+ <div class="form-group">
+ <label>Amount:</label>
+ <input type="number" id="amount" name="amount" step="0.01" required placeholder="0.00">
+ </div>
+ <div class="form-group">
+ <label>Currency:</label>
+ <select id="currency" name="currency">
+ <option value="USD">US Dollar ($)</option>
+ <option value="EUR">Euro (€)</option>
+ <option value="GBP">British Pound (£)</option>
+ <option value="JPY">Japanese Yen (¥)</option>
+ <option value="BTC">Bitcoin (₿)</option>
+ </select>
+ </div>
+ <button type="submit">Send Money Now</button>
+ </form>
+
+ <div class="balance-display">
+ <h3>Account Balances</h3>
+ <ul class="balance-list">
+ {% for user in users %}
+ <li class="balance-item">
+ <div>
+ Account: {{ user.account_number }}<br>
+ Bank: {{ user.name }}
+ </div>
+ <div class="amount">
+ {{ user.balance }} {{ user.currency }}
+ </div>
+ </li>
+ {% endfor %}
+ </ul>
+ </div>
+ 
+ {% with messages = get_flashed_messages(with_categories=true) %}
+ {% if messages %}
+ {% for category, message in messages %}
+ <div class="alert {{ category }}">
+ {{ message }}
+ </div>
+ {% endfor %}
+ {% endif %}
+ {% endwith %}
+ </div>
+</body>
+   </html>
