@@ -89,3 +89,5 @@ def send_money():
         flash('Insufficient funds.', 'error')
 
     return redirect(url_for('index'))
+    # This helps Vercel find the app
+app = app
